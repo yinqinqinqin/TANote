@@ -107,3 +107,31 @@ float2 uv = R.xy * 0.5 + 0.5;
 float3 matcap = tex2D(MatcapTex, uv);
 ```
 
+# 源码
+
+## BRANCH
+
+GPU 默认会**尽量避免真正的 if 分支**，因为：
+
+- GPU 是 SIMD（同一批线程一起执行）
+- 分支会导致 **warp divergence（线程分歧）**
+- 可能拖慢性能
+
+所以编译器常常会把：
+
+```
+if (A) result = X;
+else result = Y;
+```
+
+优化成：
+
+```
+result = lerp(Y, X, A);
+```
+
+导致两个if分支都进行计算
+
+**那 BRANCH 的意义就是：**
+
+👉 **强制使用真实分支，而不是 lerp/混合**
