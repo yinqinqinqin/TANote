@@ -1,4 +1,4 @@
-# Code
+# Parallax
 
 ```glsl
 // 自定义节点输出类型：Float2（严格匹配你的设置）
