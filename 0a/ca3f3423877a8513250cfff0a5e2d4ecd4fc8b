@@ -1,0 +1,117 @@
+UE/Algorithm/PBR-BxDF.md
+  s_4a8c56204d3459::t_20c9d2a0b02e08 23,25,27-33,35,37,42,44 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a4f146bc9641dd9b3aa5b1c","tool_type":"agent","tool_id":"RunCommand","line_ranges":[{"Single":23},{"Single":25},{"Range":[27,33]},{"Single":35},{"Single":37},{"Single":42},{"Single":44}]}]}
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "0aca3f3423877a8513250cfff0a5e2d4ecd4fc8b",
+  "prompts": {},
+  "sessions": {
+    "s_4a8c56204d3459": {
+      "agent_id": {
+        "tool": "trae",
+        "id": "6a42107848f4a265659d6a00",
+        "model": "Seed-Dogfooding-2.0__dev",
+        "display_model_name": "Seed-Dogfooding-2.0"
+      },
+      "human_author": "xuyujie <xuyujie.brbi@bytedance.com>"
+    }
+  },
+  "attestation_metadata": {
+    "UE/Algorithm/PBR-BxDF.md": [
+      {
+        "hash": "s_4a8c56204d3459::t_20c9d2a0b02e08",
+        "line_ranges": [
+          {
+            "Single": 23
+          },
+          {
+            "Single": 25
+          },
+          {
+            "Range": [
+              27,
+              33
+            ]
+          },
+          {
+            "Single": 35
+          },
+          {
+            "Single": 37
+          },
+          {
+            "Single": 42
+          },
+          {
+            "Single": 44
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a4f146bc9641dd9b3aa5b1c",
+            "tool_type": "agent",
+            "tool_id": "RunCommand",
+            "line_ranges": [
+              {
+                "Single": 23
+              },
+              {
+                "Single": 25
+              },
+              {
+                "Range": [
+                  27,
+                  33
+                ]
+              },
+              {
+                "Single": 35
+              },
+              {
+                "Single": 37
+              },
+              {
+                "Single": 42
+              },
+              {
+                "Single": 44
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "remote_transcripts": {
+    "s_4a8c56204d3459": {
+      "tool": "trae",
+      "conversation_id": "6a42107848f4a265659d6a00",
+      "session_id": "6a42107848f4a265659d6a00",
+      "status": "remote_only",
+      "message": "Remote transcript resolution is not implemented yet for TRAE prompts."
+    },
+    "s_4a8c56204d3459::t_205d641922024e": {
+      "tool": "trae",
+      "conversation_id": "6a42107848f4a265659d6a00",
+      "session_id": "6a42107848f4a265659d6a00",
+      "status": "remote_only",
+      "message": "Remote transcript resolution is not implemented yet for TRAE prompts."
+    },
+    "s_4a8c56204d3459::t_20c9d2a0b02e08": {
+      "tool": "trae",
+      "conversation_id": "6a42107848f4a265659d6a00",
+      "session_id": "6a42107848f4a265659d6a00",
+      "status": "remote_only",
+      "message": "Remote transcript resolution is not implemented yet for TRAE prompts."
+    },
+    "s_4a8c56204d3459::t_4a5c0ebc465aa2": {
+      "tool": "trae",
+      "conversation_id": "6a42107848f4a265659d6a00",
+      "session_id": "6a42107848f4a265659d6a00",
+      "status": "remote_only",
+      "message": "Remote transcript resolution is not implemented yet for TRAE prompts."
+    }
+  }
+}
