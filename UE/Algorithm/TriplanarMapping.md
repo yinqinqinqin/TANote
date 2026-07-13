@@ -19,6 +19,10 @@
    - 混合 Alpha：法线 Z 分量 → 高对比度处理 → Saturate 钳制
    - 效果：法线越朝向 Z 轴，越偏向 XY 平面 UV；否则沿用前一步的混合结果。
 
+![image-20260713120933825](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260713120934125.png)
+
+此处的CheapConstrast是
+
 ## UE材质
 
 ![image-20260710161830917](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260710161831322.png)
