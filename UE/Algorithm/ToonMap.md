@@ -23,3 +23,6 @@ float3 ACESToneMapping(float3 x)
 ## 使用方法
 
 一般在后处理之后使用，使用后处理体积进行调整
+
+也可以使用节点调整
+
