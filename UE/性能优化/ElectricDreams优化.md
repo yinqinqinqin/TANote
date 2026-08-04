@@ -192,3 +192,42 @@ stat streaming
 - World Partition Cell 加载时出现几十毫秒停顿。
 
 ## 优化方法
+
+### 第一步-查看统计数据
+
+![image-20260803151505737](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260803151506709.png)
+
+打开统计面板数据，查看当前关卡中，每个物体占用情况
+
+![image-20260803155758410](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260803155759377.png)
+
+红框这一行 **`CloudFillingRGB`**：
+
+修改为
+
+```
+最大纹理尺寸：2048
+```
+
+![image-20260803161416469](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260803161417365.png)
+
+对比得到纹理占用内存减少很多
+
+使用相同方法，对多次使用，并内存较大的纹理进行压缩
+
+### 处理重复，不该存在的Actor
+
+### 对静态网格体体处理
+
+在统计数据中，找到实例较多的植物，岩石，批量编辑审计资产，降低植物的质量
+
+![image-20260804144101600](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260804144101677.png)
+
+![image-20260804144037139](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260804144038282.png)这个石块使用了223次，并且有千万面
+
+- 降低三角形保持百分比
+- 减少使用数量
+
+**优化后**：减少到10万
+
+![image-20260804144741445](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260804144741630.png)
