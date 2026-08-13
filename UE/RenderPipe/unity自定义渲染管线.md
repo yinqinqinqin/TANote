@@ -16,7 +16,7 @@
 
 ### Color RT
 
-
+屏幕最终看到的颜色
 
 ### Depth RT
 
@@ -59,3 +59,53 @@
 - 分成两个pass实现
   - Pass1:仅写入深度，不写入颜色![image-20260812171048253](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260812171048608.png)
   - Pass2:关闭深度写入，ZTest Equal![image-20260812171330974](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260812171331152.png)
+
+## Hi-Z
+
+
+
+## 延迟渲染
+
+### 什么是延迟渲染
+
+==在后处理阶段进行光照处理==
+
+需要的RT
+
+- BaseColor
+- Smothness
+- Metallic
+- Normal
+- Depth
+
+### 为什么要进行延迟渲染
+
+解决复杂光照的问题
+
+### 怎么做延迟渲染
+
+使用MRT技术
+
+一次渲染多个RT
+
+![image-20260813105100851](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260813105101500.png)
+
+### G-Buffer设计
+
+![image-20260813105243613](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260813105243715.png)
+
+![image-20260813110433673](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260813110433837.png)
+
+## 光照优化
+
+==与Forward+，defferred+==有关==
+
+###  Clustered  Lighting
+
+### Tiled Lighting
+
+![image-20260813124831288](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260813124831597.png)
+
+## 自定义渲染管线
+
+![image-20260813124956624](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260813124956748.png)
