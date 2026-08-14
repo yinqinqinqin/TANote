@@ -109,3 +109,13 @@
 ## 自定义渲染管线
 
 ![image-20260813124956624](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260813124956748.png)
+
+
+
+
+
+![image-20260814143709297](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260814143709572.png)
+
+## 通过深度图得到世界空间坐标
+
+![image-20260814142117605](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260814142118080.png)
