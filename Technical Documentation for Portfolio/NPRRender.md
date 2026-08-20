@@ -229,9 +229,28 @@ return n * 0.5 + 0.5;
 
 # 视差效果
 
+基于切线空间 View Direction 的简单视差偏移
 
+原理
+
+```glsl
+  // 输入：uv, viewDirTS（切线空间）, strength float3 V = normalize(viewDirTS); 
+  // 只用方向，不用深度 float2 offset =V.xy * strength;
+   // 输出 return uv + offset;
+    
+    uv = uv *2.0-1.0; 
+    uv = uv * ParallaxMap_ST.xy + ParallaxMap_ST.zw; 
+    uv = uv *0.5+0.5; 
+    float cosTheta = dot (viewTS,float3(0,0,1)); 
+    float ViewTSLength = depth / cosTheta; 
+    float3 startPoint = float3(uv,0); 
+    float3 endPoint = startPoint + viewTS * ViewTSLength;
+     return endPoint.xy;
+```
 
 # 文字流动效果
+
+
 
 
 
