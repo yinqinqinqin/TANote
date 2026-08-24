@@ -104,11 +104,37 @@ float G = Gv * Gl;
 
 ```
 
+## 自定义单光源PBR
 
+### 1.设置基础属性
 
+1. 设置颜色 BaseColor
+2. 金属度 Metallic
+3. 粗糙度 Roughness
+4. 法线 Normal
+5. 视线方向 ViewDir
+6. 光源方向 LightDir
+7. H  = normalize(V + L);
 
+### 2.计算基础数据
 
+1. NOH = Dot(N , H);
+2. NOV = Dot(N , V);
+3. NOL = Dot(N , L);
+4. F0 = Leap(0.04(Spacular) , BaseColor , Metallic);
 
+### 3.计算D，F，G
 
+D：
 
+![image-20260820164611147](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260824171347464.png)
 
+![image-20260824171642462](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260824171642582.png)
+
+F：![image-20260820164725592](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260824171415128.png)
+
+![image-20260824171752328](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260824171752452.png)
+
+G： 
+
+![image-20260820165150552](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260824171809484.png)
