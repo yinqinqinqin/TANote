@@ -30,8 +30,6 @@ matcapUV.y = dot(N, U);
 matcapUV = matcapUV * 0.5 + 0.5;
 ```
 
-
-
 直接使用真正的 View Space 相机坐标系	
 
 ```

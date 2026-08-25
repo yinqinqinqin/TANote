@@ -35,6 +35,12 @@ kd = (1.0 - ks) * (1.0 - Metallic);
 
 ![image-20260708111805170](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260820160909586.png)
 
+
+
+简化公式
+
+![image-20260825153700815](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260825153700980.png)
+
 ## D
 
 法线分布函数 GGX
@@ -122,6 +128,7 @@ float G = Gv * Gl;
 2. NOV = Dot(N , V);
 3. NOL = Dot(N , L);
 4. F0 = Leap(0.04(Spacular) , BaseColor , Metallic);
+5. ks = 
 
 ### 3.计算D，F，G
 
@@ -138,3 +145,15 @@ F：![image-20260820164725592](https://yin-qin.oss-accelerate.aliyuncs.com/img/2
 G： 
 
 ![image-20260820165150552](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260824171809484.png)
+
+![image-20260708141610146](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260825112037651.png)
+
+![image-20260825111842410](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260825111842527.png)
+
+## 4.计算直接光
+
+直接光漫反射
+
+![image-20260825112943582](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260825112943745.png)
+
+直接光镜面反射
