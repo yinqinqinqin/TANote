@@ -21,8 +21,6 @@ Blender中，需要使用两套UV确定枢纽点，分别得到枢纽点的x，y
 
 ![image-20260824143732690](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260824143735394.png)
 
-
-
 关键在attribwrangle节点中，给每个点增加一个pieceID值，告诉UV每个点代表
 
 ```

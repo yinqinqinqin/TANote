@@ -18,7 +18,7 @@ uv = uv *0.5+0.5;
 
 手动构造一个面向相机的局部坐标系
 
-```
+```glsl
 float3 V = normalize(CameraPos - WorldPos);
 float3 R = normalize(cross(V, float3(0,0,1)));
 float3 U = cross(R, V);

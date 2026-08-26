@@ -2,22 +2,6 @@
 
 ## 目标
 
-### 硬件信息
-
-```
-操作系统：Windows 11 专业版 64 位（Build 26200）
-CPU：Intel Core Ultra 7 265K（20 核 / 20 线程）
-GPU：NVIDIA GeForce RTX 5060
-显存：8 GB（系统检测约 8151 MiB）
-系统内存：64 GB（系统可用约 63.7 GiB）
-硬盘：WD_BLACK SN7100 2TB NVMe SSD
-显示分辨率：2560 × 1440，约 144 Hz
-目标输出分辨率：2560 × 1440（建议使用显示器原生分辨率）
-内部渲染比例：100%（建议作为性能测试基线）
-目标帧率：60 FPS
-目标帧时间：16.67 ms
-```
-
 ### 优化目标
 
 ```
@@ -26,7 +10,7 @@ GPU：NVIDIA GeForce RTX 5060
 测试构建：Windows Development 打包版本
 渲染接口：DirectX 12
 目标输出分辨率：1920 × 1080
-内部渲染比例：50%
+内部渲染比例：100%
 目标帧率：60 FPS
 目标帧时间：16.67 ms
 最低可接受帧率：30 FPS
@@ -36,11 +20,11 @@ GPU：NVIDIA GeForce RTX 5060
 ### 影响帧率因素
 
 - Lumen GI：开启；
-- Lumen Reflections：开启或使用 SSR，必须写明；
-- Hardware Ray Tracing：开启或关闭，必须固定；
+- Lumen Reflections：使用 SSR；
+- Hardware Ray Tracing：关闭；
 - Virtual Shadow Maps：开启；
 - Nanite：开启；
-- TSR：/开启；
+- TSR：开启；
 - 输出分辨率固定；
 - `r.ScreenPercentage` 固定；
 - Scalability 固定。
@@ -231,3 +215,4 @@ stat streaming
 **优化后**：减少到10万
 
 ![image-20260804144741445](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260804144741630.png)
+

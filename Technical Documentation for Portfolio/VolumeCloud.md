@@ -2,11 +2,65 @@
 
 ## UE 体积云系统
 
+### 自定义体积云
+
+需要将材质设置为addtive模式，并且勾选体积云使用
+
 ![image-20260825164401074](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260825164401214.png)
 
 ![image-20260825162343793](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260825162344090.png)
 
 这部分先使用世界空间 2D Mask 控制云的大范围分布，再叠加世界空间 3D Noise 对云进行侵蚀和细节塑形，最终生成用于体积云的 Extinction/Density。
+
+### ElectricDreams 官方使用体积云
+
+![image-20260826105528622](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260826105528705.png)
+
+在lookdev环境中制作的体积云，对比自定义的体积云增加了云层混合的效果，并且参数调整也更加流畅
+
+![image-20260826110917316](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260826110917495.png)
+
+
+
+体积云专用调整不同高度的效果面板
+
+![image-20260826111042784](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260826111042870.png)
+
+材质制作流程：
+
+```
+World Position
+      ↓
+2D Pattern / Weather Mask
+      ↓
+决定哪里有云
+      ↓
+Height Mask
+      ↓
+限制云底与云顶
+      ↓
+Base 3D Noise
+      ↓
+制作大型立体云形
+      ↓
+Detail Noise
+      ↓
+侵蚀 / 打碎云边缘
+      ↓
+Wind + Time
+      ↓
+让云流动
+      ↓
+Density
+      ↓
+Extinction
+      ↓
+Albedo + Phase + Multi Scattering
+      ↓
+Volumetric Cloud Ray Marching
+      ↓
+最终体积云
+```
 
 ## UE光线步进
 

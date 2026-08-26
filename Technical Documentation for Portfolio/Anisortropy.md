@@ -1,5 +1,9 @@
 # Stalized Anisortropy
 
+## 风格化头发
+
+![image-20260824170148081](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260824170148193.png)
+
 ## 风格化各向异性原理
 
 - 使用代码生成各向异性高光形状
@@ -8,7 +12,7 @@
 
 各项异性基本代码
 
- ````
+ ````glsl
  float3 N_TS = TransformWorldToTangent(NormalWS);
  
  float3 A_TS =
@@ -38,6 +42,3 @@
      * HighlightColor;
  ````
 
-## 风格化头发
-
-![image-20260824170148081](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260824170148193.png)

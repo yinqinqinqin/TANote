@@ -181,6 +181,14 @@ Voronoi 闪粉
 
 # 特殊材质制作
 
+## SDF脸部阴影
+
+
+
+
+
+
+
 ## 闪粉效果
 
 使用程序化 Voronoi 生成随机法线。
@@ -331,8 +339,7 @@ return float3(voronoi, voronoi, voronoi);
 
 代码生成扰动噪声
 
-```
-
+```glsl
 float Scale = 10;
 int Detail = 100;
 float Roughness =0.5;
