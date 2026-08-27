@@ -1,4 +1,0 @@
-# Performance Optimization
-
-[Toc]
-

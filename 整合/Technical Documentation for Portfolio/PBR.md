@@ -128,7 +128,8 @@ float G = Gv * Gl;
 2. NOV = Dot(N , V);
 3. NOL = Dot(N , L);
 4. F0 = Leap(0.04(Spacular) , BaseColor , Metallic);
-5. ks = 
+5. ks = F;
+6. kd = (1-ks) * ( 1 - Metallic);
 
 ### 3.计算D，F，G
 

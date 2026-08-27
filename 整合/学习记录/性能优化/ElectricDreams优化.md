@@ -177,7 +177,9 @@ stat streaming
 
 ## 优化方法
 
-### 第一步-查看统计数据
+### 降低过大贴图分辨率
+
+#### 查看统计数据
 
 ![image-20260803151505737](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260803151506709.png)
 
@@ -201,13 +203,17 @@ stat streaming
 
 ### 处理重复，不该存在的Actor
 
-### 对静态网格体体处理
+#### 对静态网格体体处理
 
 在统计数据中，找到实例较多的植物，岩石，批量编辑审计资产，降低植物的质量
 
 ![image-20260804144101600](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260804144101677.png)
 
 ![image-20260804144037139](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260804144038282.png)这个石块使用了223次，并且有千万面
+
+### 降低物体的面数，确认是否开启Nanite
+
+例如下面的石块
 
 - 降低三角形保持百分比
 - 减少使用数量
@@ -216,3 +222,6 @@ stat streaming
 
 ![image-20260804144741445](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260804144741630.png)
 
+### 优化着色器
+
+### 优化植被阴影、WPO和VSM

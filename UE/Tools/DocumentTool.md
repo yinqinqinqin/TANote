@@ -1,7 +1,0 @@
----
-
----
-
-# DocumentTool
-
-[toc]
