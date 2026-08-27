@@ -1,26 +1,33 @@
-# InterviewQuestionSelf
-
+---
+title: 面试 - InterviewQuestionSelf
+category: 学习记录
+date: 2026-08-27
+readTime: 1 min read
+excerpt: 面试 学习记录，整理 渲染管线、前向渲染管线、延迟渲染管线 等内容。
+tags: [面试]
+cover: https://yin-qin.oss-accelerate.aliyuncs.com/img/20260814163549406.png
+---
 [TOC]
 
-## 渲染管线
+# 渲染管线
 
-### 前向渲染管线
+## 前向渲染管线
 
-### 延迟渲染管线
+## 延迟渲染管线
 
-### ColorRT DepthRT
+## ColorRT DepthRT
 
-### DrawCall / MRT / overdraw
+## DrawCall / MRT / overdraw
 
-### Gbuffer
+## Gbuffer
 
 常会保存==BaseColor、World Normal、Roughness、Metallic、Specular/AO、Shading Model==等信息，
 
-#### Unity URP的Gbuffer
+### Unity URP的Gbuffer
 
 ![image-20260814163549075](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260814163549406.png)
 
-### Early-Z / Z-Prepass / AlphaTest / Stencil Test
+## Early-Z / Z-Prepass / AlphaTest / Stencil Test
 
 - Early-Z
   - 将深度测试提前到像素着色器前面
@@ -37,56 +44,61 @@
   - UE中的Mask遮照
   - 当透明度小于一个阈值的时候直接剔除
 
-### Clustered Lighting
+## Clustered Lighting
 
 把相机视锥体划分成很多 3D 小块 Cluster，然后提前计算每个 Cluster 会受到哪些灯光影响。渲染像素时，只遍历当前 Cluster 对应的灯光。
 
 **Forward+ 是渲染方式，Clustered Lighting 是灯光筛选方式。**
 
-### Shadow Pass
+## Shadow Pass
 
-## PBR
+# PBR
 
-## 光照
+# 光照
 
-## 阴影
+# 阴影
 
-### Shadow Map
+## Shadow Map
 
-### PCF / PCSS
+## PCF / PCSS
 
-### CSM
+## CSM
 
-### VSM / Virtual Shadow Maps
+## VSM / Virtual Shadow Maps
 
-### Contact Shadow
+## Contact Shadow
 
-## 材质
+# 材质
 
-### 贴图采样
+## 贴图采样
 
-### MatCap
+## MatCap
 
-### 描边
+## 描边
 
-### 各向异性
+## 各向异性
 
-## 后处理
+# 后处理
 
-### Bloom
+## Bloom
 
-### Tonemapping
+## Tonemapping
 
-### TAA / TSR / FXAA
+## TAA / TSR / FXAA
 
-### SSR/SSAO
+## SSR/SSAO
 
-## 性能优化
+# 性能优化
 
 发现问题 → 定位瓶颈 → 验证 → 优化。
 
-## 基础知识点
+# 基础知识点
 
-#### sRGB
+### sRGB
 
 sRGB 不是“显示的颜色”本身，而是一种面向显示设备的颜色编码/色彩空间。
+# 总结分析
+
+- 这篇主要记录 `InterviewQuestionSelf` 相关内容，核心集中在 渲染管线、前向渲染管线、延迟渲染管线。
+- 归类到 `面试` 下，适合当作学习过程中的快速复习材料。
+- 后续如果要对外展示，可以继续补充实际截图、关键参数和最终效果对比。

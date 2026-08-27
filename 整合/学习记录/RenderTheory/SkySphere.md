@@ -1,5 +1,12 @@
-# 天空球体
-
+---
+title: 渲染理论 - 天空球体
+category: 学习记录
+date: 2026-08-27
+readTime: 1 min read
+excerpt: 渲染理论 学习记录，整理 天空球体 等内容。
+tags: [渲染理论]
+cover: https://yin-qin.oss-accelerate.aliyuncs.com/img/20260713153917056.png
+---
 当我们需要在天空添加星星，月亮时，需要一个天空球体的材质，在材质中添加相关的物体
 
 1. 使用引擎内置的球形网格体，该网格体的法线都是朝内的，确保光线可以穿透球体
@@ -15,3 +22,8 @@
       1. 需要SkyAtmosphereviewLuminance（视场亮度）：包含天空球的颜色信息
       2. SkyAtmosphereLightDiskLuminance：场景中的定向光源
       3. 添加之后的区别![image-20260713152128293](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260713153917056.png)
+# 总结分析
+
+- 这篇目前内容较少，后续可以继续补充 `天空球体` 的具体步骤、问题和结论。
+- 归类到 `渲染理论` 下，适合当作学习过程中的快速复习材料。
+- 后续如果要对外展示，可以继续补充实际截图、关键参数和最终效果对比。

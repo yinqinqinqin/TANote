@@ -1,5 +1,12 @@
-# Electric Dreams 性能优化作品集执行手册（精简重写版）
-
+---
+title: 性能优化 - Electric Dreams 性能优化作品集执行手册（精简重写版）
+category: 学习记录
+date: 2026-08-27
+readTime: 13 min read
+excerpt: 性能优化 学习记录，整理 目录、1. 整套优化只按这一条路线执行、1.1 固定测试条件 等内容。
+tags: [性能优化]
+cover: ""
+---
 > 这份手册只保留两类内容：必要的数据记录，以及可以直接照着操作的 Electric Dreams 优化步骤。
 
 > 当前测试机：Intel Core Ultra 7 265K、RTX 5060 8GB、64GB内存、NVMe SSD。主线目标为 1920×1080、50% Screen Percentage、60 FPS / 16.67 ms。
@@ -8,7 +15,7 @@
 
 ---
 
-## 目录
+# 目录
 
 1. [整套优化只按这一条路线执行](#1-整套优化只按这一条路线执行)
 2. [数据记录速查](#2-数据记录速查)
@@ -54,7 +61,7 @@
 5. 正式测试三次；
 6. 如果没有稳定改善就恢复，不继续叠加修改。
 
-## 1.1 固定测试条件
+# 1.1 固定测试条件
 
 优化前后保持：
 
@@ -80,7 +87,7 @@ r.DynamicRes.OperationMode 0
 r.ScreenPercentage 50
 ```
 
-## 1.2 哪些操作不能算内容优化
+# 1.2 哪些操作不能算内容优化
 
 下面操作可以提高帧率，但必须单独标注为画质伸缩，不能和内容优化混在一起：
 
@@ -96,7 +103,7 @@ r.ScreenPercentage 50
 
 你已经理解数据记录，本章只保留必须使用的内容。
 
-## 2.1 屏幕上显示的数据
+# 2.1 屏幕上显示的数据
 
 ```text
 stat fps
@@ -119,7 +126,7 @@ Frame ≤ 16.67 ms
 GPU ≤ 16.67 ms
 ```
 
-## 2.2 GPU Pass
+# 2.2 GPU Pass
 
 ```text
 stat gpu
@@ -138,7 +145,7 @@ TSR
 Translucency
 ```
 
-## 2.3 纹理与显存
+# 2.3 纹理与显存
 
 ```text
 stat streaming
@@ -153,7 +160,7 @@ Over Budget
 是否出现Video Memory Exhausted
 ```
 
-## 2.4 最小记录表
+# 2.4 最小记录表
 
 ```markdown
 | 版本 | FPS | Frame ms | Game ms | Draw ms | GPU ms | Texture Over Budget | 显存警告 |
@@ -166,7 +173,7 @@ Over Budget
 
 # 3. 修改前先准备工作副本
 
-## 3.1 复制地图
+# 3.1 复制地图
 
 1. 打开内容浏览器；
 2. 定位：
@@ -191,7 +198,7 @@ Over Budget
 
 7. 以后只打开 `ED_CloseRange_Working`。
 
-## 3.2 创建自己的资产目录
+# 3.2 创建自己的资产目录
 
 ```text
 /Game/PortfolioOptimization/
@@ -204,7 +211,7 @@ Over Budget
 
 修改PCG Graph、材质或Mesh之前先复制到自己的目录。不要直接覆盖官方资产。
 
-## 3.3 每次修改的恢复方法
+# 3.3 每次修改的恢复方法
 
 最简单的做法：
 
@@ -232,7 +239,7 @@ Video memory has been exhausted
 
 因此显存是第一项必须处理的问题。显存超预算时，纹理会反复换入换出，帧率测试也会不稳定。
 
-## 4.1 先确认问题是否来自纹理
+# 4.1 先确认问题是否来自纹理
 
 1. 重启UE；
 2. 只打开 `ED_CloseRange_Working`；
@@ -260,7 +267,7 @@ stat streaming正常，但仍显示显存耗尽
 → 还可能是RTAS、VSM、Lumen Render Target或Nanite Buffer，继续4.2和4.4。
 ```
 
-## 4.2 使用Render Resource Viewer找到最大的资源
+# 4.2 使用Render Resource Viewer找到最大的资源
 
 1. 回到编辑器；
 2. 点击顶部 **Tools（工具）**；
@@ -291,11 +298,11 @@ Vertex/Index Buffer：网格和Nanite数据
 - 位于前20项；
 - 在固定测试路线中确实可见。
 
-## 4.3 逐张降低不必要的纹理分辨率
+# 4.3 逐张降低不必要的纹理分辨率
 
 每次只处理3～5张纹理。
 
-### 打开纹理后检查
+## 打开纹理后检查
 
 ```text
 Imported Size
@@ -307,7 +314,7 @@ Never Stream
 Compression Settings
 ```
 
-### 大型悬崖和主岩石
+## 大型悬崖和主岩石
 
 1. 如果Imported Size是8192，先把 `Max Texture Size` 设为4096；
 2. 保存；
@@ -316,14 +323,14 @@ Compression Settings
 5. 看不出明显区别时才保留；
 6. 不要直接把主悬崖降到1024。
 
-### 河床小石头、落叶和枝条
+## 河床小石头、落叶和枝条
 
 1. 8192或4096纹理先测试2048；
 2. 只在远处出现的小Mask可测试1024；
 3. Base Color、Normal和Mask不要求使用相同分辨率；
 4. 每次都检查湿润边缘和法线闪烁。
 
-### Streaming设置
+## Streaming设置
 
 1. 普通场景纹理的 `Never Stream` 应关闭；
 2. `Mip Gen Settings` 不应为 `NoMipmaps`；
@@ -331,7 +338,7 @@ Compression Settings
 4. Normal使用WorldNormalMap组；
 5. Mask通常关闭sRGB并使用正确的Masks压缩。
 
-### 不要这样处理
+## 不要这样处理
 
 ```text
 r.Streaming.PoolSize 0
@@ -355,7 +362,7 @@ r.Streaming.LimitPoolSizeToVRAM 1
 
 如果当前值本来就小于或等于3000，不要反而把它调大。
 
-## 4.4 如果RTAS很大，测试Software Ray Tracing
+# 4.4 如果RTAS很大，测试Software Ray Tracing
 
 只有Render Resource Viewer中RTAS占用明显时才执行。
 
@@ -389,7 +396,7 @@ RTAS占用
 
 如果Software RT明显降低显存、帧时间更稳定且画面可接受，可以作为本机8GB档。这个结果属于设备配置，不属于内容优化。
 
-## 4.5 显存优化通过标准
+# 4.5 显存优化通过标准
 
 - 连续运行三次测试路线不持续显示显存耗尽；
 - `stat streaming` 不持续Over Budget；
@@ -422,7 +429,7 @@ Static Mesh Spawner：Graph末端真正生成石头、树枝等Mesh的节点。
 
 你这一章真正要做的事情只有三件：减少Clutter数量、关闭小装饰碰撞、确认它们使用实例。
 
-## 5.1 找到工作地图实际使用的PCG Graph
+# 5.1 找到工作地图实际使用的PCG Graph
 
 1. 打开 `ED_CloseRange_Working`；
 2. 在World Outliner搜索：
@@ -456,7 +463,7 @@ Electric Dreams常见候选路径：
 
 不要求全部修改。只修改当前组件真正引用的Graph。
 
-## 5.2 复制Graph并绑定副本
+# 5.2 复制Graph并绑定副本
 
 1. 右键目标Graph；
 2. Duplicate到：
@@ -479,7 +486,7 @@ PCG_LargeAssembly_Test
 8. 确认画面与原版完全相同；
 9. 保存。
 
-## 5.3 先找到Clutter分支，不要随便删节点
+# 5.3 先找到Clutter分支，不要随便删节点
 
 Electric Dreams的Assembly点中常见标签：
 
@@ -499,7 +506,7 @@ Helper：只用于生成规则，不应该最终生成Mesh
 6. 记录过滤前后点数；
 7. 不要修改 `ApplyHierarchy`、`ActorIndex`、`ParentActorIndex` 等层级结构。
 
-## 5.4 降低Clutter密度
+# 5.4 降低Clutter密度
 
 优先调整Graph中已经存在的Clutter密度参数。
 
@@ -528,7 +535,7 @@ Helper：只用于生成规则，不应该最终生成Mesh
 /Game/Levels/PCG/Breakdown_Levels/ElectricDreams_PCGForest
 ```
 
-## 5.5 关闭NoCol和小Clutter碰撞
+# 5.5 关闭NoCol和小Clutter碰撞
 
 1. 在Graph中找到 `NoCol` 或小Clutter数据流；
 2. 找到最终的 `Static Mesh Spawner`；
@@ -547,7 +554,7 @@ Can Ever Affect Navigation：关闭
 8. 确认地面、主岩石和主悬崖仍有碰撞；
 9. 进入游戏走过测试区域，确认没有穿地或卡住。
 
-## 5.6 确认重复物体使用实例
+# 5.6 确认重复物体使用实例
 
 1. 查看Static Mesh Spawner输出；
 2. 河床小石头、落叶、枝条和重复岩石应使用ISM/HISM；
@@ -562,7 +569,7 @@ stat scenerendering
 
 7. 对比Actor、Primitive和Draw Calls。
 
-## 5.7 PCG优化通过标准
+# 5.7 PCG优化通过标准
 
 - 只减少Clutter，没有改变主悬崖和河床结构；
 - Helper不会生成最终Mesh；
@@ -595,7 +602,7 @@ VSM：Virtual Shadow Maps，当前场景使用的虚拟阴影系统。
 
 本步骤先处理最安全的两项：小植被阴影和远距离WPO。
 
-## 6.1 找到问题植被
+# 6.1 找到问题植被
 
 1. 在固定路线找到树叶或草最多的镜头；
 2. 打开：
@@ -619,7 +626,7 @@ View Mode
 6. `Ctrl+B`定位Mesh；
 7. 打开Mesh，找到叶片Material Instance和Master Material。
 
-## 6.2 先关闭小Clutter阴影
+# 6.2 先关闭小Clutter阴影
 
 不要先关闭主树阴影。按照这个顺序：
 
@@ -648,7 +655,7 @@ profilegpu
 9. 如果画面几乎不变而VSM下降，保留；
 10. 如果地面明显失去层次，恢复并只关闭更小的物件。
 
-## 6.3 设置小植被剔除距离
+# 6.3 设置小植被剔除距离
 
 在PCG Static Mesh Spawner的实例Descriptor或对应Foliage Type中找到：
 
@@ -676,9 +683,9 @@ End Cull Distance
 6. 快速飞行再检查一次；
 7. 对比实例数、Draw/GPU和视觉。
 
-## 6.4 给远距离风动画增加WPO淡出
+# 6.4 给远距离风动画增加WPO淡出
 
-### 准备材质副本
+## 准备材质副本
 
 1. 复制植被Master Material到：
 
@@ -690,7 +697,7 @@ End Cull Distance
 3. 只让工作地图中的目标植被使用副本；
 4. 保存原始WPO节点截图。
 
-### 添加距离淡出节点
+## 添加距离淡出节点
 
 在材质编辑器添加：
 
@@ -733,7 +740,7 @@ Distance(CameraPositionWS, Absolute World Position)
 6. 再次ProfileGPU；
 7. 如果树冠明显僵硬，提高Fade距离。
 
-## 6.5 查看VSM缓存是否改善
+# 6.5 查看VSM缓存是否改善
 
 1. 打开：
 
@@ -755,7 +762,7 @@ Shadow Casters
 7. 小Clutter阴影关闭后截图；
 8. 最终测试前关闭VSM可视化，因为可视化自身有成本。
 
-## 6.6 植被优化通过标准
+# 6.6 植被优化通过标准
 
 - 主树阴影仍保留；
 - 小Clutter阴影减少；
@@ -772,7 +779,7 @@ CloseRange中的大型悬崖Assembly和河床岩石可能存在大量内部重�
 
 `Nanite Overdraw` 可以简单理解为：同一个屏幕像素后面叠了很多层Nanite几何体，GPU需要处理这些层。这个项目中应优先减少悬崖内部看不到的重复小装饰，而不是破坏外轮廓。
 
-## 7.1 在拆解地图中定位
+# 7.1 在拆解地图中定位
 
 1. 打开：
 
@@ -804,7 +811,7 @@ Evaluate WPO
 
 拆解地图只用于找问题，最终FPS必须在工作地图测试。
 
-## 7.2 确认主要岩石是否启用Nanite
+# 7.2 确认主要岩石是否启用Nanite
 
 1. 在悬崖或大型岩石实例上按 `Ctrl+B`；
 2. 打开Static Mesh；
@@ -824,7 +831,7 @@ Evaluate WPO
 8. 重新ProfileGPU；
 9. 只有实际变快才保留。
 
-## 7.3 找出Overdraw来自哪一层
+# 7.3 找出Overdraw来自哪一层
 
 1. 固定Nanite Overdraw最亮的镜头；
 2. 每次只隐藏一组：
@@ -841,7 +848,7 @@ Large Assembly
 4. 恢复其他组；
 5. 不要直接删除整个Large Assembly。
 
-## 7.4 减少内部不可见Clutter
+# 7.4 减少内部不可见Clutter
 
 1. 回到对应PCG Graph副本；
 2. 找到该Assembly的Clutter分支；
@@ -854,7 +861,7 @@ Large Assembly
 9. 测试Nanite/VSM/GPU时间；
 10. 没有明显收益就恢复。
 
-## 7.5 不建议的Nanite操作
+# 7.5 不建议的Nanite操作
 
 - 不要看到Nanite成本就批量关闭Nanite；
 - 不要默认把所有高模重新减面；
@@ -862,7 +869,7 @@ Large Assembly
 - 不要修改Fallback Mesh来假装运行时三角形减少；
 - 不要用拆解地图FPS代替工作地图FPS。
 
-## 7.6 Nanite优化通过标准
+# 7.6 Nanite优化通过标准
 
 - 明确知道Overdraw来自哪一组；
 - 只减少内部或重复Clutter；
@@ -885,7 +892,7 @@ Material Instance：使用母材质逻辑，只调整开关、纹理和数值的
 
 初学阶段优先调整Material Instance中已经暴露的选项，不要直接拆改复杂的官方Master Material。
 
-## 8.1 找到热点材质
+# 8.1 找到热点材质
 
 1. 打开：
 
@@ -910,7 +917,7 @@ View Mode
 植被叶片材质
 ```
 
-## 8.2 先只修改Material Instance里已有的参数
+# 8.2 先只修改Material Instance里已有的参数
 
 1. 复制Material Instance；
 2. 只让工作地图引用副本；
@@ -936,7 +943,7 @@ Wind/WPO
 
 如果Material Instance没有暴露这些参数，初学阶段先跳过，不要直接在复杂官方Master中大范围删节点。
 
-## 8.3 河床湿润材质的测试顺序
+# 8.3 河床湿润材质的测试顺序
 
 严格按这个顺序：
 
@@ -961,7 +968,7 @@ Wind/WPO
 
 不要一次关闭湿润、法线和反射，否则无法知道哪个操作有效。
 
-## 8.4 岩石材质的安全优化
+# 8.4 岩石材质的安全优化
 
 优先关闭远距离看不到的：
 
@@ -978,7 +985,7 @@ Wind/WPO
 - 苔藓/湿润轮廓；
 - 大尺度颜色变化。
 
-## 8.5 植被材质的安全优化
+# 8.5 植被材质的安全优化
 
 1. Blend Mode应是Masked，不应误用Translucent；
 2. 不要为每个实例创建独立材质；
@@ -987,7 +994,7 @@ Wind/WPO
 5. 轻微调整Opacity Mask Clip Value时检查树叶边缘；
 6. 树叶明显变薄或闪烁就恢复。
 
-## 8.6 材质优化通过标准
+# 8.6 材质优化通过标准
 
 - 只改了实际热点材质；
 - 每个功能都有独立A/B；
@@ -1011,7 +1018,7 @@ Lumen相关Pass位于ProfileGPU前五
 
 `Surface Cache` 可以理解为Lumen为场景表面准备的简化光照信息。可视化中的大面积粉红通常表示Lumen没有正确覆盖该表面，可能造成间接光或反射发黑。
 
-## 9.1 记录当前设置
+# 9.1 记录当前设置
 
 打开：
 
@@ -1032,7 +1039,7 @@ Ray Lighting Mode
 
 后续测试中保持固定。
 
-## 9.2 检查Surface Cache错误
+# 9.2 检查Surface Cache错误
 
 在视口依次打开：
 
@@ -1057,7 +1064,7 @@ r.Lumen.Visualize.CardPlacement 0
 
 检查Large Assembly和主岩石是否出现大面积粉红色。
 
-## 9.3 修复关键Mesh的Surface Cache
+# 9.3 修复关键Mesh的Surface Cache
 
 只处理会影响主镜头GI和反射的大型Mesh。
 
@@ -1072,7 +1079,7 @@ r.Lumen.Visualize.CardPlacement 0
 
 不要给所有小石头增加Cards。Cards增加也会增加更新和内存成本。
 
-## 9.4 Hardware RT与Software RT对照
+# 9.4 Hardware RT与Software RT对照
 
 如果Hardware RT导致显存或RTAS压力：
 
@@ -1094,7 +1101,7 @@ Lumen Reflections
 
 对RTX 5060 8GB，如果Software RT明显稳定且画面可接受，可以作为最终8GB配置。
 
-## 9.5 小幅降低Lumen质量
+# 9.5 小幅降低Lumen质量
 
 只有Lumen仍是主要成本时执行：
 
@@ -1114,7 +1121,7 @@ Lumen Reflections Quality
 7. 没有明显收益就恢复；
 8. 这个修改应标注为画质伸缩，不是纯内容优化。
 
-## 9.6 Lumen优化通过标准
+# 9.6 Lumen优化通过标准
 
 - Lumen确实是主要成本才修改；
 - Surface Cache关键错误减少；
@@ -1129,9 +1136,9 @@ Lumen Reflections Quality
 
 平均FPS正常，但第一次经过某处突然卡顿，需要单独处理。
 
-## 10.1 分开测试冷运行和热运行
+# 10.1 分开测试冷运行和热运行
 
-### 冷运行
+## 冷运行
 
 1. 完全关闭Standalone或打包程序；
 2. 重新启动；
@@ -1139,7 +1146,7 @@ Lumen Reflections Quality
 4. 第一次播放测试路线；
 5. 标记为Cold。
 
-### 热运行
+## 热运行
 
 1. 不退出程序；
 2. 再播放一次作为预热；
@@ -1148,7 +1155,7 @@ Lumen Reflections Quality
 
 Cold和Warm不能计算到同一个平均值中。
 
-## 10.2 判断卡顿来源
+# 10.2 判断卡顿来源
 
 使用Unreal Insights，在慢帧位置查看：
 
@@ -1177,7 +1184,7 @@ PCG Generate没有出现
 → 不要把卡顿写成PCG运行时问题。
 ```
 
-## 10.3 处理大资源首次加载
+# 10.3 处理大资源首次加载
 
 1. 找到卡顿发生的镜头位置；
 2. 查看刚进入画面的新岩石、植被或效果；
@@ -1187,7 +1194,7 @@ PCG Generate没有出现
 6. 降低单个突发资源后重新冷启动测试；
 7. 不要只增大Pool，否则可能重新导致显存超预算。
 
-## 10.4 处理Shader/PSO
+# 10.4 处理Shader/PSO
 
 1. 正式测试前等待Shader编译完成；
 2. 删除没有用途的材质排列；
@@ -1195,7 +1202,7 @@ PCG Generate没有出现
 4. 最终在Development包检查PSO Precache；
 5. 保存Cold与Warm两张帧时间曲线。
 
-## 10.5 卡顿优化通过标准
+# 10.5 卡顿优化通过标准
 
 - Cold和Warm结果分开；
 - >33.3ms帧数减少；
@@ -1207,7 +1214,7 @@ PCG Generate没有出现
 
 # 11. 最终测试与性能录制
 
-## 11.1 最终测试前关闭可视化
+# 11.1 最终测试前关闭可视化
 
 关闭：
 
@@ -1222,7 +1229,7 @@ PCG Debug
 
 这些视图自身会影响性能。
 
-## 11.2 最终测试步骤
+# 11.2 最终测试步骤
 
 1. 启动Standalone或Development包；
 2. 等待30～60秒；
@@ -1234,7 +1241,7 @@ PCG Debug
 8. 再重启程序完成一次Cold测试；
 9. 填写最终表。
 
-## 11.3 最终数据表
+# 11.3 最终数据表
 
 ```markdown
 | 指标 | Baseline | Optimized | 变化 |
@@ -1250,9 +1257,9 @@ PCG Debug
 | >33.3ms慢帧 | | | |
 ```
 
-## 11.4 性能视频与画质视频分开
+# 11.4 性能视频与画质视频分开
 
-### 性能对比
+## 性能对比
 
 使用Standalone或Windows Development实机运行：
 
@@ -1263,7 +1270,7 @@ stat unit
 
 然后使用Xbox Game Bar或OBS录制同一条路线。
 
-### 画质展示
+## 画质展示
 
 使用Movie Render Queue输出，不显示FPS。
 
@@ -1275,7 +1282,7 @@ MRQ是离线逐帧渲染，不能证明实时性能。
 
 如果你现在就开始操作，先只完成前三天。
 
-## 第一天：只处理显存
+# 第一天：只处理显存
 
 ```text
 打开ED_CloseRange_Working
@@ -1287,7 +1294,7 @@ MRQ是离线逐帧渲染，不能证明实时性能。
 → 连续三次不持续报警
 ```
 
-## 第二天：只处理PCG小物件
+# 第二天：只处理PCG小物件
 
 ```text
 找到实际PCG Graph
@@ -1299,7 +1306,7 @@ MRQ是离线逐帧渲染，不能证明实时性能。
 → 三次A/B
 ```
 
-## 第三天：只处理植被
+# 第三天：只处理植被
 
 ```text
 找到小草/落叶/灌木Spawner
@@ -1316,7 +1323,7 @@ MRQ是离线逐帧渲染，不能证明实时性能。
 
 # 13. 命令速查
 
-## 固定环境
+# 固定环境
 
 ```text
 r.VSync 0
@@ -1325,7 +1332,7 @@ r.DynamicRes.OperationMode 0
 r.ScreenPercentage 50
 ```
 
-## 性能
+# 性能
 
 ```text
 stat fps
@@ -1336,21 +1343,21 @@ profilegpu
 stat scenerendering
 ```
 
-## 纹理与内存
+# 纹理与内存
 
 ```text
 stat streaming
 r.Streaming.PoolSize
 ```
 
-## CSV
+# CSV
 
 ```text
 csvprofile start
 csvprofile stop
 ```
 
-## Lumen
+# Lumen
 
 ```text
 r.Lumen.Visualize.CardPlacement 1
@@ -1361,7 +1368,7 @@ r.Lumen.Visualize.CardPlacement 0
 
 # 14. 最终检查清单
 
-## 测试条件
+# 测试条件
 
 - [ ] 使用 `ED_CloseRange_Working`；
 - [ ] Baseline与Optimized都是1920×1080、50%、High；
@@ -1370,14 +1377,14 @@ r.Lumen.Visualize.CardPlacement 0
 - [ ] 每个版本测试三次；
 - [ ] Cold和Warm分开。
 
-## 显存
+# 显存
 
 - [ ] 不持续显示Video Memory Exhausted；
 - [ ] Texture Pool不持续Over Budget；
 - [ ] 没有使用无限纹理池；
 - [ ] 近景纹理仍清晰。
 
-## PCG
+# PCG
 
 - [ ] 只减少Clutter；
 - [ ] 主悬崖、主岩石和主树不受影响；
@@ -1385,7 +1392,7 @@ r.Lumen.Visualize.CardPlacement 0
 - [ ] 重复物体使用ISM/HISM；
 - [ ] 没有浮空和大片空白。
 
-## 植被与阴影
+# 植被与阴影
 
 - [ ] 小Clutter阴影减少；
 - [ ] 主树阴影保留；
@@ -1393,7 +1400,7 @@ r.Lumen.Visualize.CardPlacement 0
 - [ ] 没有明显植被突然消失；
 - [ ] VSM成本或失效页下降。
 
-## Nanite、材质与Lumen
+# Nanite、材质与Lumen
 
 - [ ] Nanite Overdraw来源明确；
 - [ ] 没有删除悬崖外轮廓；
@@ -1402,7 +1409,7 @@ r.Lumen.Visualize.CardPlacement 0
 - [ ] Lumen只有在确实昂贵时才调整；
 - [ ] Hardware/Software RT选择有数据。
 
-## 最终交付
+# 最终交付
 
 - [ ] 有Baseline与Optimized数据表；
 - [ ] 有同镜头画质截图；
@@ -1413,7 +1420,7 @@ r.Lumen.Visualize.CardPlacement 0
 
 ---
 
-## 官方参考资料
+# 官方参考资料
 
 - [Electric Dreams Environment](https://dev.epicgames.com/documentation/en-us/unreal-engine/electric-dreams-environment-in-unreal-engine)
 - [Procedural Content Generation in Electric Dreams](https://dev.epicgames.com/documentation/en-us/unreal-engine/procedural-content-generation-in-electric-dreams)
@@ -1423,3 +1430,8 @@ r.Lumen.Visualize.CardPlacement 0
 - [Lumen Performance Guide](https://dev.epicgames.com/documentation/en-us/unreal-engine/lumen-performance-guide-for-unreal-engine)
 - [Working with Nanite-Enabled Content](https://dev.epicgames.com/documentation/unreal-engine/working-with-naniteenabled-content)
 - [Stat Commands](https://dev.epicgames.com/documentation/en-us/unreal-engine/stat-commands-in-unreal-engine)
+# 总结分析
+
+- 这篇主要记录 `Electric Dreams 性能优化作品集执行手册（精简重写版）` 相关内容，核心集中在 目录、1. 整套优化只按这一条路线执行、1.1 固定测试条件。
+- 归类到 `性能优化` 下，适合当作学习过程中的快速复习材料。
+- 后续如果要对外展示，可以继续补充实际截图、关键参数和最终效果对比。

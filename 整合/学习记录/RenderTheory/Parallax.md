@@ -1,5 +1,12 @@
-# Parallax
-
+---
+title: 渲染理论 - Parallax
+category: 学习记录
+date: 2026-08-27
+readTime: 1 min read
+excerpt: 渲染理论 学习记录，整理 Parallax 等内容。
+tags: [渲染理论]
+cover: ""
+---
 ```glsl
 // 自定义节点输出类型：Float2（严格匹配你的设置）
  // 输入：uv(float2), viewDir(float3), Tangent(float3), VertexNormalWS(float3), offset(float) float3 worldRayDir = -viewDir;
@@ -28,4 +35,8 @@
     float3 endPoint = startPoint + viewTS * ViewTSLength;
      return endPoint.xy;
 ```
+# 总结分析
 
+- 这篇目前内容较少，后续可以继续补充 `Parallax` 的具体步骤、问题和结论。
+- 归类到 `渲染理论` 下，适合当作学习过程中的快速复习材料。
+- 后续如果要对外展示，可以继续补充实际截图、关键参数和最终效果对比。

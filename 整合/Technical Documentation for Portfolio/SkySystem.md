@@ -1,4 +1,12 @@
-# SkySystem
+---
+title: SkySystem
+category: 作品集
+date: 2026-08-27
+readTime: 10 min read
+excerpt: UE 动态天空系统制作记录，包含昼夜循环、天空球、云层、地形、雪天、雨天和 Niagara 天气效果。
+tags: [UE, 天空系统]
+cover: ""
+---
 
 [toc]
 
@@ -45,15 +53,15 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
 
 ## 昼夜循环系统
 
-### 知识点
+**知识点**
 
 - UE中宏的使用
 - 蓝图与材质交互
 - 动态材质
 
-### 1.自定义星空与月球
+## 1.自定义星空与月球
 
-#### 基础设置
+**基础设置**
 
 1. 创建蓝图类，选择actor作为父类	
 2. 在左侧组件库内，重新拖入天气组件放入场景中
@@ -61,7 +69,7 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
 3. 构建脚本
    1. 创建或更新时执行
 
-#### 控制昼夜切换（方向光的旋转）
+**控制昼夜切换（方向光的旋转）**
 
 1. 添加时间变量
    1. 当前时间
@@ -69,12 +77,12 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
 2. 创建处理昼夜切换函数
 3. 使用节点==Set World Rotation==设置方向光的旋转
 
-#### 添加夜晚光照
+**添加夜晚光照**
 
 1. 添加夜晚方向光，并设置好灯光强度
 2. 在脚本中通过设置旋转节点，实现太阳下落之后，月亮升起的效果
 
-#### 蓝图的宏
+**蓝图的宏**
 
 ==函数，宏，事件==
 
@@ -91,7 +99,7 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
    2. 再创建一个判断是否是晚上的宏
 2. 根据宏的返回值，判断白天晚上，使用节点==Set Visiable==设置方向光的显隐
 
-#### 调整蓝图中的灯光属性
+**调整蓝图中的灯光属性**
 
 ==在白天基础的光照属性上面进行设置==，
 
@@ -99,7 +107,7 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
 2. 回到蓝图，通过==Set Intensity，Set Light Color==等节点，重新设置灯光的属性
 3. 使用分支节点，判断白天夜晚，设置不同的数值
 
-#### 创建动态天空球
+**创建动态天空球**
 
 1. 从引擎目录中，找到天空球Mesh
 2. 创建新的天空球材质，模拟天空效果
@@ -112,7 +120,7 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
 3. 添加到蓝图中
 4. 设置细节面板中的is sky
 
-#### 在天空球材质中，新增星空的效果
+**在天空球材质中，新增星空的效果**
 
 使用贴图，并调整UV的平铺达到星空的效果
 
@@ -120,47 +128,47 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
 
 使用timeWithVariable搭配panner节点进行滚动播放
 
-#### ==使用动态材质实例==控制星星的显隐
+**==使用动态材质实例==控制星星的显隐**
 
 1. 在材质中，增加显隐判断的参数
 2. 在BP_DynamicSky的蓝图类中，创建动态材质实例==Creat Dynamic Materiał Instance==,将输出提升为变量
 3. 通过节点==Set Scalar Parameter Value==控制显隐判断的参数，使用一个bool变量进行控制
 
-#### 使用==SkyAtmosphereImage==生成月亮
+**使用==SkyAtmosphereImage==生成月亮**
 
 1. 该节点专门用来生成太阳，月亮，星空，云层的叠加效果
 2. 输入2d纹理贴图，SkyAtmosphereLightDirection，进行控制
 3. result和mask相乘得到结果
 
-#### 控制月亮的显隐
+**控制月亮的显隐**
 
 同控制星星显隐步骤一样
 
-#### 在蓝图中添加更多变量控制材质的属性
+**在蓝图中添加更多变量控制材质的属性**
 
-### 2.添加云层与体积云
+## 2.添加云层与体积云
 
-#### 知识点
+**知识点**
 
 1. 蓝图枚举定义2D和3D云
 2. 平面投影，投影体积云
 3. 体积纹理
 4. 体积高级输出
 
-#### 蓝图枚举
+**蓝图枚举**
 
 1. 新建需要的枚举
 2. 在蓝图中，创建枚举类型的变量
 3. 使用==switch==节点对枚举类型进行分类
 
-#### 2D云层
+**2D云层**
 
 1. 在天空球材质中，增加云层纹理效果
 2. 解决地平线切断问题，使用vertex normal，通过遮照获取到上半区，对天空部分进行过度
 3. 对白天和夜晚的云层进行一个lerp变量
 4. 在蓝图中，控制白天和晚上云层的属性
 
-#### 3D云层
+**3D云层**
 
 1. 三平面投影
    1. 使用绝对世界坐标后，使用遮照会导致只能一个面能正常显示
@@ -183,21 +191,21 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
 5. 在蓝图中，添加体积云的属性控制
 6. 调整整个云层的效果
 
-## 创建地形
+# 创建地形
 
-### 知识点
+## 知识点
 
 1. 地形的创建
 2. 三线形平面
 3. 多地形材质混合
 
-### 1.地形创建
+## 1.地形创建
 
 在地形模式中，创建自定义地形
 
 使用噪声纹理作为笔刷，在地形上面涂抹创建地形细节
 
-### 2.纹理轰炸
+## 2.纹理轰炸
 
 1. 引擎自带的节点==Texture_Bombing==也可以实现纹理轰炸的效果，但是效果并没有很好
 2. ![image-20260527153141137](/Users/bytedance/Desktop/PracticeSpace/BlogBuild/img/image-20260527153141137.png)
@@ -207,7 +215,7 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
 6. 使用lerp混合三个面，中间需要使用==CheapContrast==弱化边缘
 7. 将三面投影的UV连接到轰炸纹理的UV上面，得到最终的基础地形纹理
 
-### 自动地形材质多地形混合
+## 自动地形材质多地形混合
 
 1. 将纹理轰炸和三面投影封装成材质函数
 2. 创建山脉材质
@@ -217,9 +225,9 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
 6. 重新填充autoland层的材质，能够得到草地和山脉混合的材质
 7. 调整所有材质的参数，得到更好的效果
 
-## 雪天天气
+# 雪天天气
 
-### 知识点
+## 知识点
 
 1. 雪地足迹
 2. 雪粒子
@@ -233,16 +241,16 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
 10. ==System Parameters==
 11. ==Niagara系统的UV动画==
 
-### 1.创建雪天场景
+## 1.创建雪天场景
 
 1. 在测试关卡中，对整个场景的参数进行调整，灯光，天空，后处理等
 
-### 2.Data Assets
+## 2.Data Assets
 
 1. 添加蓝图类，在allclass中找到dataasset作为父类
 2. 创建data asset，指定创建好的蓝图类作为父类
 
-### 3.Struct
+## 3.Struct
 
 1. 创建白天与雪天的结构体
 2. 在结构体中，添加控制方向光的属性
@@ -250,7 +258,7 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
    1. 编译之后，dataasset因为继承这个蓝图类，所以会获得对应的参数
    2. 在动态天气的蓝图中新增dataasset的蓝图，会自动增加一个dataasset的槽位
 
-### 4.天气切换
+## 4.天气切换
 
 1. 创建新的函数，将dataasset蓝图作为变量添加上去
 2. 获取类中天气结构体类型，并通过break将结构体打开
@@ -260,7 +268,7 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
    1. 每次修改数据之后，需要重新点击面板刷新当前画面，需要一个专门用来刷新的按钮
    2. 暴露一个刷新bool变量，点击后方便刷新画面
 
-### 5.创建雪地
+## 5.创建雪地
 
 1. 使用上半区遮照的方法，将法线朝上的区域进行遮照，进行雪的生成
 2. 使用==材质参数集==保证雪天与晴天天气切换后，地面材质正确
@@ -268,7 +276,7 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
    2. 在材质中，添加雪地与草地的变换参数，使用参数集中的参数进行控制
    3. 在蓝图中，添加控制参数集的参数的代码，当晴天与雪天切换时，使用==set scalar paramter value==自动切换参数集的参数
 
-### 6.足迹
+## 6.足迹
 
 1. ==anim notify动画通知==
    1.  创建蓝图类，找到anim notify设置为父类
@@ -312,7 +320,7 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
       2. 根据当前落地的脚，设置不同的Niagara足迹粒子
       3. 根据骨骼获取人物的方向
 
-#### 雪粒子
+**雪粒子**
 
 为了保证性能，将根据摄像机的位置生成雪粒子
 
@@ -329,7 +337,7 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
    7. 设置发射器的基础设置，循环改为无限
    8. 将系统参数中的摄像机的位置传递给发射器，设置发射器的位置为摄像机的上前方
 
-#### 雪天雾
+**雪天雾**
 
 通过UV动画给场景增加雾气效果
 
@@ -349,9 +357,9 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
       1. 新建结构体，添加需要控制的参数
       2. 在蓝图中，新建控制粒子的宏，使用==Set Niagara Variable By String==控制参数
 
-## 雨天天气
+# 雨天天气
 
-### 知识点
+## 知识点
 
 - ==UV动画==制作交互水花溅起效果
 - ==后处理==范围效果
@@ -361,7 +369,7 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
   - ==这种方法只能错误地改变光照亮度，无法真正控制凹凸强度==
 - GPU与CPU粒子
 
-### 1.创建雨天天气
+## 1.创建雨天天气
 
 - 光照
 - 材质
@@ -374,7 +382,7 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
 4. 创建DataAsset
 5. 调整雨天的天气效果
 
-### 2.水洼
+## 2.水洼
 
 1. 制作水洼材质
 2. 拖入水洼的基础贴图
@@ -389,7 +397,7 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
    2. 正确的做法是，通过mask节点，对r，g通道进行控制，b通道不变，再使用==append==节点连接通道
 10. 在蓝图中添加雨天才有水洼的逻辑，使用材质参数集控制是否存在水洼
 
-### 3.雨滴材质
+## 3.雨滴材质
 
 1. 修改混合模式为加法
 2. 改为无光照模式
@@ -408,11 +416,20 @@ https://www.bilibili.com/video/BV1zaPzzBEfq?spm_id_from=333.788.player.switch&vd
     4. 使用新的草稿实现
 12. 在Collision中有一个事件可以杀死当前粒子
 
-### 4.水花
+## 4.水花
 
 1. 修改雨滴材质的输入图为水花
 2. 在地面的地方随机生成水花的粒子
 3. 调整水花的属性效果
 
-### 5.闪电
+## 5.闪电
 
+# 总结分析
+
+- 这个系统的核心不是单个材质效果，而是把天空、灯光、云、地形和天气全部放到一个可控的蓝图流程里。
+- 昼夜循环主要靠方向光旋转和动态材质参数控制，太阳、月亮、星星的显隐都可以通过蓝图统一驱动。
+- 云层分成 2D 云和体积云两套方案，2D 云更便宜，体积云效果更真实，但需要更多材质和性能控制。
+- 地形材质里比较关键的是三平面投影和纹理轰炸，用来解决拉伸和重复感明显的问题。
+- 雪天系统重点在材质参数集和 Niagara，材质参数集负责全局雪量切换，Niagara 负责雪粒子、雾气和足迹。
+- 雨天系统重点在水洼、涟漪、雨滴和水花，材质与 Niagara 需要配合摄像机位置做局部生成，避免全场景无效开销。
+- 后续如果继续完善，可以把天气参数统一收进 DataAsset，让每种天气只维护一份配置，蓝图里只负责读取和应用。

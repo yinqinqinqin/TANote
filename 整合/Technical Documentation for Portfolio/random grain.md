@@ -1,6 +1,14 @@
-# Random Grain
+---
+title: Random Grain
+category: 作品集
+date: 2026-08-27
+readTime: 2 min read
+excerpt: 乱纹不锈钢材质记录，整理 Blender 和 UE 中通过方向贴图控制各向异性高光的方法。
+tags: [风格化渲染, 各向异性]
+cover: https://yin-qin.oss-accelerate.aliyuncs.com/img/20260824150843645.png
+---
 
-## Blender中的乱纹不锈钢效果
+# Blender中的乱纹不锈钢效果
 
 ![image-20260824150843412](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260824150843645.png)
 
@@ -32,7 +40,7 @@
 
 ![image-20260824154713470](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260824154713662.png)
 
-## UE中乱纹效果
+# UE中乱纹效果
 
 ![image-20260824153555551](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260824153555698.png)
 
@@ -54,7 +62,7 @@
 
 
 
-## 贴图分析
+# 贴图分析
 
 R
 
@@ -71,3 +79,11 @@ A
 R，G控制滑痕方向
 
 A控制粗糙度
+
+# 总结分析
+
+- 这个效果的关键是方向贴图，R、G 不直接当颜色看，而是当作每个像素的划痕方向。
+- 在 Blender 里通过 `atan2(Y, X)` 把二维方向转换成角度，再接到 `Anisotropic Rotation`，控制各向异性高光旋转。
+- 在 UE 里可以直接把处理后的方向信息接到 `Tangent`，再配合 `Anisotropy` 控制高光拉伸程度。
+- Alpha 通道用来控制粗糙度，划痕区域更低 Roughness 时，高光会更集中，乱纹金属感更明显。
+- 整体思路不是做一张固定高光贴图，而是让每个像素都有自己的高光方向，这样材质转动时会更像真实拉丝金属。

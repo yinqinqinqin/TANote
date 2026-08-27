@@ -1,5 +1,12 @@
-# Shadow
-
+---
+title: 渲染理论 - Shadow
+category: 学习记录
+date: 2026-08-27
+readTime: 1 min read
+excerpt: 渲染理论 学习记录，整理 Shadow Map、PCF & PCSS、CSM & VSM 等内容。
+tags: [渲染理论]
+cover: ""
+---
 [Toc]
 
 # Shadow Map
@@ -48,15 +55,15 @@ PCF 主要解决 Shadow Map 锯齿，而 PCSS 在 PCF 基础上根据遮挡物�
 
 # CSM & VSM 
 
-## CSM
+# CSM
 
-## **Cascaded Shadow Maps**
+# **Cascaded Shadow Maps**
 
 主要给太阳这种 Directional Light 用。
 
 CSM = 把相机前方按距离切成几段，每段使用不同 Shadow Map。
 
-## VSM
+# VSM
 
 做一张超级高精度 Shadow Map，但是只加载当前真正需要的区域。
 
@@ -80,16 +87,21 @@ Contact Shadow = 专门补物体接触位置的小阴影。
 
 # Shadow Acne & Bias
 
-## Shadow Acne
+# Shadow Acne
 
 Shadow Map 做深度比较的时候会有精度误差。
 
 自己把自己判断成阴影了导致Shadow Acne，自阴影错误。
 
-## Bais
+# Bais
 
 Bias = 给 Shadow Map 深度比较增加一点偏移，防止自阴影错误。
 
 # Ray Traced Shadow 
 
 Ray Traced Shadow = 直接发射光线检查光源和像素之间有没有障碍物。
+# 总结分析
+
+- 这篇主要记录 `Shadow` 相关内容，核心集中在 Shadow Map、PCF & PCSS、CSM & VSM。
+- 归类到 `渲染理论` 下，适合当作学习过程中的快速复习材料。
+- 后续如果要对外展示，可以继续补充实际截图、关键参数和最终效果对比。

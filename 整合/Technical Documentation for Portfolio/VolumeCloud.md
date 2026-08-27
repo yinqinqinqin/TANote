@@ -1,8 +1,16 @@
-# VolumeCloud
+---
+title: VolumeCloud
+category: 作品集
+date: 2026-08-27
+readTime: 3 min read
+excerpt: 体积云实现记录，包含 UE 体积云材质、ElectricDreams 官方体积云思路、光线步进和 Unity 手搓体积云方向。
+tags: [体积云, RayMarching]
+cover: https://yin-qin.oss-accelerate.aliyuncs.com/img/20260825164401214.png
+---
 
-## UE 体积云系统
+# UE 体积云系统
 
-### 自定义体积云
+## 自定义体积云
 
 需要将材质设置为addtive模式，并且勾选体积云使用
 
@@ -12,7 +20,7 @@
 
 这部分先使用世界空间 2D Mask 控制云的大范围分布，再叠加世界空间 3D Noise 对云进行侵蚀和细节塑形，最终生成用于体积云的 Extinction/Density。
 
-### ElectricDreams 官方使用体积云
+## ElectricDreams 官方使用体积云
 
 ![image-20260826105528622](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260826105528705.png)
 
@@ -62,7 +70,7 @@ Volumetric Cloud Ray Marching
 最终体积云
 ```
 
-## UE光线步进
+# UE光线步进
 
 输入：
 
@@ -111,9 +119,17 @@ Dist < SphereRadius ?
 return 0
 ```
 
-## Unity手搓体积云
+# Unity手搓体积云
 
-### sdf光线步进
+## sdf光线步进
 
-### 3dTexture体积云
+## 3dTexture体积云
 
+# 总结分析
+
+- UE 体积云主要是通过材质生成 Density / Extinction，再交给体积云系统进行 Ray Marching。
+- 自定义体积云可以先用 2D Weather Mask 控制大范围分布，再用 3D Noise 和 Detail Noise 做体积感和边缘侵蚀。
+- ElectricDreams 的体积云更偏完整生产流程，会把高度、云层混合、风向流动、多重散射等参数拆得更细。
+- 光线步进代码的核心是从相机位置沿视线方向逐步前进，检查采样点是否进入目标体积范围。
+- `MAX_MARCHINGTIMES` 控制最大步数，步数越高越精细，但成本也越高。
+- Unity 手搓体积云可以从 SDF 光线步进开始，再逐步换成 3D Texture 密度采样。

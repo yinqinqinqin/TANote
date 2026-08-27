@@ -1,11 +1,18 @@
-# PBR-BXDF
-
+---
+title: 渲染理论 - PBR-BXDF
+category: 学习记录
+date: 2026-08-27
+readTime: 2 min read
+excerpt: 渲染理论 学习记录，整理 直接光、间接光、UE中实现PBR 等内容。
+tags: [渲染理论]
+cover: https://yin-qin.oss-accelerate.aliyuncs.com/img/20260708105955195.png
+---
 UE的PBR完全是基于BXDF实现，所有核心算法都集中在两个文件里：
 
 - 底层工具函数：`BRDF.ush`（GGX 分布、几何函数、菲涅尔、`Init` 预计算、面光源修正）
 - 上层调度逻辑：`ShadingModels.ush`（按不同着色模型调用对应 BRDF，整合光照结果）
 
-## 直接光
+# 直接光
 
 基于物理的光照模型必须满足三个条件
 
@@ -63,7 +70,7 @@ UE的PBR完全是基于BXDF实现，所有核心算法都集中在两个文件�
       - G项被认为应该分成两个部分光线被吸收和光线被遮挡![image-20260708142032473](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260708142032567.png)
       - G的代码![image-20260708142054543](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260708142054610.png)
 
-## 间接光
+# 间接光
 
 间接光使用IBL进行模拟
 
@@ -77,7 +84,9 @@ UE默认着色
 
 ![image-20260709022837134](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260709022837353.png)
 
-## UE中实现PBR
+# UE中实现PBR
+# 总结分析
 
-
-
+- 这篇主要记录 `PBR-BXDF` 相关内容，核心集中在 直接光、间接光、UE中实现PBR。
+- 归类到 `渲染理论` 下，适合当作学习过程中的快速复习材料。
+- 后续如果要对外展示，可以继续补充实际截图、关键参数和最终效果对比。

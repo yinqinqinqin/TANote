@@ -1,5 +1,12 @@
-# InterviewQuestion
-
+---
+title: 面试 - InterviewQuestion
+category: 学习记录
+date: 2026-08-27
+readTime: 9 min read
+excerpt: 面试 学习记录，整理 一、实时渲染管线、二、材质和 Shader、1. PBR基础 等内容。
+tags: [面试]
+cover: ""
+---
 # 一、实时渲染管线
 
 这是渲染向 TA 最重要的部分之一。
@@ -52,7 +59,7 @@ $$
 
 你目前在这一部分已经有一定积累，但面试不只问“会不会连节点”，而是问你是否理解底层原因。
 
-## 1. PBR基础
+# 1. PBR基础
 
 必须掌握：
 
@@ -77,7 +84,7 @@ $$
 - AO 为什么不应该直接影响直接光？
 - Emissive 为什么不等于真正光源？
 
-## 2. BRDF
+# 2. BRDF
 
 至少要理解：
 $$
@@ -100,7 +107,7 @@ $$
 - Roughness 如何改变微表面分布；
 - 能量守恒是什么。
 
-## 3. Shader实际知识
+# 3. Shader实际知识
 
 需要掌握：
 
@@ -182,7 +189,7 @@ UE 材质系统支持节点化材质、材质实例和 Shader 开发；实际优
 
 # 四、灯光、阴影和曝光
 
-## 1. 灯光
+# 1. 灯光
 
 需要理解：
 
@@ -206,7 +213,7 @@ UE 材质系统支持节点化材质、材质实例和 Shader 开发；实际优
 - Forward+ 是如何处理多光源的？
 - 半透明材质怎么接受光照？
 
-## 2. 阴影
+# 2. 阴影
 
 需要掌握：
 
@@ -221,7 +228,7 @@ UE 材质系统支持节点化材质、材质实例和 Shader 开发；实际优
 - Peter Panning；
 - PCF 和软阴影基本原理。
 
-## 3. UE5重点系统
+# 3. UE5重点系统
 
 需要知道这些系统之间的关系：
 
@@ -254,7 +261,7 @@ $$
 }
 $$
 
-## 1. 帧时间
+# 1. 帧时间
 
 必须能计算：
 $$
@@ -268,7 +275,7 @@ $$
 - Memory Bound；
 - Loading/Stall。
 
-## 2. 常用工具
+# 2. 常用工具
 
 UE 中需要知道：
 
@@ -286,7 +293,7 @@ UE 中需要知道：
 
 Unreal Insights 可以分析 CPU、GPU、内存、网络和资产加载等数据；Epic 也建议结合 Shader Complexity、材质指令数及具体 GPU Pass 来验证优化，而不是凭感觉判断。
 
-## 3. 常见性能知识点
+# 3. 常见性能知识点
 
 需要区分：
 
@@ -319,7 +326,7 @@ Unreal Insights 可以分析 CPU、GPU、内存、网络和资产加载等数据
 
 # 六、纹理与资产规范
 
-## 1. 纹理基础
+# 1. 纹理基础
 
 必须掌握：
 
@@ -352,7 +359,7 @@ Width\times Height\times4\text{ Bytes}
 $$
 加上完整 Mipmap 后，大约再增加三分之一。
 
-## 2. 模型资产
+# 2. 模型资产
 
 需要掌握：
 
@@ -388,7 +395,7 @@ $$
 
 需要掌握三种层级：
 
-## Blueprint
+# Blueprint
 
 适合：
 
@@ -399,7 +406,7 @@ $$
 - 简单批处理；
 - 美术可维护工具。
 
-## Python
+# Python
 
 适合：
 
@@ -410,7 +417,7 @@ $$
 - 跨 DCC 流程；
 - 构建资产管理管线。
 
-## C++
+# C++
 
 适合：
 
@@ -438,7 +445,7 @@ UE 官方提供 Blueprint、Python、Editor Utility、Scripted Actions 和 Data 
 
 # 八、Niagara、PCG和程序化技术
 
-## Niagara
+# Niagara
 
 需要了解：
 
@@ -466,7 +473,7 @@ UE 官方提供 Blueprint、Python、Editor Utility、Scripted Actions 和 Data 
 
 Epic 为 Niagara 提供了独立的性能测量、Debugger、GPU Tick、Shader Complexity 和 Scalability 工作流。
 
-## PCG
+# PCG
 
 需要了解：
 
@@ -638,14 +645,14 @@ $$
 
 现在应该优先补强：
 
-## 第一优先级
+# 第一优先级
 
 - 系统化性能分析；
 - Unreal Insights、ProfileGPU、RenderDoc配合使用；
 - 每个作品给出明确的毫秒、Draw Call、显存或 Shader 成本；
 - 深度、坐标空间、法线矩阵、TBN彻底掌握。
 
-## 第二优先级
+# 第二优先级
 
 - Shader Permutation；
 - Static Switch 和动态分支；
@@ -653,14 +660,14 @@ $$
 - Texture Streaming、Mip、压缩和显存计算；
 - Nanite、Lumen、VSM 的限制与排错。
 
-## 第三优先级
+# 第三优先级
 
 - Python或C++资产检查工具；
 - Data Validation；
 - 自动导入、命名、贴图设置、LOD检查；
 - 工具的错误处理、Undo和文档。
 
-## 第四优先级
+# 第四优先级
 
 - UE渲染源码框架；
 - Renderer、RenderCore、RHI；
@@ -682,3 +689,8 @@ $$
 }
 $$
 比“所有模块都学一点但没有核心优势”更适合作品集和面试。
+# 总结分析
+
+- 这篇主要记录 `InterviewQuestion` 相关内容，核心集中在 一、实时渲染管线、二、材质和 Shader、1. PBR基础。
+- 归类到 `面试` 下，适合当作学习过程中的快速复习材料。
+- 后续如果要对外展示，可以继续补充实际截图、关键参数和最终效果对比。

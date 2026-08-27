@@ -1,6 +1,14 @@
-# 爱弥斯角色渲染
+---
+title: 爱弥斯角色渲染
+category: 作品集
+date: 2026-08-27
+readTime: 8 min read
+excerpt: 爱弥斯角色 NPR 渲染复刻记录，包含材质拆分、三色明暗、MatCap 高光、闪粉、视差、文字流动和消散效果。
+tags: [风格化渲染, NPR]
+cover: https://yin-qin.oss-accelerate.aliyuncs.com/img/20260825142144851.png
+---
 
-## 1. 项目概述
+# 1. 项目概述
 
 - 项目：爱弥斯角色渲染复刻
 - 引擎：UE5.7
@@ -36,23 +44,23 @@
 
 ## 3.1 获取贴图通道和材质ID
 
-### BaseColor
+**BaseColor**
 
 - RGB：BaseColor
 - A：Shadow / Emissive
 
-### Normal
+**Normal**
 
 - RG：Normal
 - A：Roughness
 
-### FTM
+**FTM**
 
 - R：Opacity
 - G：Metallic
 - B：战损 Mask
 
-### ID
+**ID**
 
 用于区分不同材质区域。
 
@@ -74,7 +82,7 @@ return FilmToneMapInverse(Input);
 
 ## 3.3 光照
 
-### Lambert
+**Lambert**
 
 ```hlsl
 float NdotL = dot(N, L);
@@ -82,7 +90,7 @@ float NdotL = dot(N, L);
 
 用于获得基础明暗关系。
 
-### MatCap 风格化高光
+**MatCap 风格化高光**
 
 将法线转换到 View Space：
 
@@ -106,9 +114,9 @@ NormalVS
 
 ------
 
-## 4. 阴影
+# 4. 阴影
 
-## 4.1三色过渡明暗分层
+## 4.1 三色过渡明暗分层
 
 普通 Toon 通常是：
 
@@ -151,7 +159,7 @@ color =
 
 ------
 
-## 5.透明度
+# 5. 透明度
 
 FTM 的 R 通道作为 Opacity。
 
@@ -159,7 +167,7 @@ FTM 的 R 通道作为 Opacity。
 
 ------
 
-## 6. 最终结构
+# 6. 最终结构
 
 ```text
 贴图
@@ -181,7 +189,7 @@ Voronoi 闪粉
 
 # 特殊材质制作
 
-## SDF脸部阴影
+## SDF 脸部阴影
 
 
 
@@ -239,7 +247,7 @@ return n * 0.5 + 0.5;
 
 基于切线空间 View Direction 的简单视差偏移
 
-原理
+## 原理
 
 ```glsl
   // 输入：uv, viewDirTS（切线空间）, strength float3 V = normalize(viewDirTS); 
@@ -276,7 +284,7 @@ return n * 0.5 + 0.5;
 
 ![image-20260825151436353](https://yin-qin.oss-accelerate.aliyuncs.com/img/20260825151436690.png)
 
-Voronoi纹理
+## Voronoi 纹理
 
 ```
 // 输入参数：UV(对应节点「矢量」，接纹理坐标)、Scale(对应「缩放」)、Jitter(对应「糙度」)
@@ -337,7 +345,7 @@ return float3(voronoi, voronoi, voronoi);
 - 使用代码生成noise图（这里不能使用random，random每一帧刷新会导致卡顿），通过noise图对长度进行扰动
 - 使用length得到圆形SDF，uv会导致拉伸，需要注意在-1 - 1的范围内进行uv变换
 
-代码生成扰动噪声
+## 代码生成扰动噪声
 
 ```glsl
 float Scale = 10;
@@ -390,3 +398,12 @@ for (int i = 0; i < Detail; i++)
 return total / max_value;
 ```
 
+# 代码分析
+
+- `FilmToneMapInverse(Input)` 是把颜色从 Tonemap 之后的状态拉回线性处理思路里，方便后面继续做风格化颜色控制。
+- `dot(N, L)` 是最基础的 Lambert，用法线和灯光方向的夹角拿到明暗关系，后面三色分层就是基于这个值去切阈值。
+- 三色阴影里用了两个 `Remap` 思路，`mask1` 负责暗部到中间色，`mask2` 负责中间色到亮部，比单纯二分 Toon 更柔和。
+- MatCap 部分直接用 `NormalVS.xy * 0.5 + 0.5`，逻辑和前面 MatCap 文档一致，适合快速补一个稳定的风格化高光。
+- 闪粉的 Voronoi 是先生成随机 Cell，再把随机颜色转成 `-1~1` 的法线方向，最后用 MatCap 去把这些随机法线变成闪点。
+- 视差部分本质是用切线空间视线方向偏移 UV，`cosTheta` 用来估算视线斜看时需要走多远。
+- 场景里的 noise 没用每帧 random，而是用固定哈希和 FBM 叠加，这样能保持随机感，同时不会每帧跳动。
