@@ -49,6 +49,63 @@ MyComputeShader/
 
 
 
+```c++
+        // 公开头文件中的基础类型、UObject 反射和 Actor 接口。
+        PublicDependencyModuleNames.AddRange(
+            new string[]
+            {
+                "Core",
+                "CoreUObject",
+                "Engine"
+            }
+        );
+```
+
+Public模块
+
+| 模块          | 你的代码为什么用它                               |
+| ------------- | ------------------------------------------------ |
+| `Core`        | 提供 `FString`、`TArray` 等基础类型              |
+| `CoreUObject` | 提供 `UObject` 对象系统和反射支持                |
+| `Engine`      | 提供 `AActor`、`UStaticMeshComponent` 等引擎类型 |
+
+
+
+```c++
+        // 仅实现文件使用的渲染、插件路径和静态网格构建接口。
+        PrivateDependencyModuleNames.AddRange(
+            new string[]
+            {
+                "RenderCore",             // 全局 Shader、RDG 和渲染线程命令。
+                "RHI",                    // GPU 资源、命令列表和功能级别。
+                "Projects",               // IPluginManager 定位 Shader 源码目录。
+                "MeshDescription",        // 顶点、顶点实例和多边形拓扑。
+                "StaticMeshDescription"   // 静态网格位置、法线、切线和 UV 属性。
+            }
+```
+
+
+
+
+
+| 模块                    | 在你的插件里负责什么                                    |
+| ----------------------- | ------------------------------------------------------- |
+| `RenderCore`            | 注册全局 Shader，用 RDG 调度 Compute Pass               |
+| `RHI`                   | 提供 GPU 纹理、缓冲区和命令列表接口                     |
+| `Projects`              | 通过 `IPluginManager` 找到插件目录，用来定位 `Shaders/` |
+| `MeshDescription`       | 描述布料网格的顶点和三角形连接                          |
+| `StaticMeshDescription` | 提供构建静态网格所需的 UV、法线和切线属性               |
+
+Private模块
+
+| 类型                        | 模块                                       | 什么时候需要                                                 |
+| --------------------------- | ------------------------------------------ | ------------------------------------------------------------ |
+| **Actor 基础依赖**          | `Core`、`CoreUObject`、`Engine`            | 大部分基于 `AActor` 的效果插件都会用到。                     |
+| **Compute Shader 常用依赖** | `RenderCore`、`RHI`                        | 你这种用 RDG 调度、读写 GPU Buffer 或纹理的实现，通常都需要这两个。 |
+| **按路径定位方式选择**      | `Projects`                                 | 用 `IPluginManager` 查找插件的 `Shaders/` 目录时需要。你的插件用了，所以要留。 |
+| **按网格生成方式选择**      | `MeshDescription`、`StaticMeshDescription` | 你的布料用 C++ 生成细分网格，所以需要。若新效果直接用已有平面 Mesh，且代码没有调用这些接口，就可以省掉。 |
+| **按渲染接口选择**          | `Renderer`                                 | 直接使用 `Renderer` 模块提供的接口时才加。你当前这套 RDG 调度无需额外加它。 |
+
 ### 第三步 查看MyClothWPOActor.h
 
 基础模板
