@@ -191,5 +191,72 @@ int32 Columns = 25;
 | `int32`              | 32 位有符号整数                                   |
 | `Columns = 25`       | 声明列数变量，并将默认值设为 25                   |
 
-### 第四步 查看**`MyCloth.usf`**
+### 第四步 查看MyClothWPOActor.cpp
 
+
+
+查看参数定义
+
+```c++
+class FMyClothDeformationCS : public FGlobalShader
+{
+    DECLARE_GLOBAL_SHADER(FMyClothDeformationCS);
+    SHADER_USE_PARAMETER_STRUCT(FMyClothDeformationCS, FGlobalShader);
+
+    BEGIN_SHADER_PARAMETER_STRUCT(FParameters, )
+        // 网格尺寸、静止间距用于还原未变形顶点位置。
+        SHADER_PARAMETER(FIntPoint, GridSize)
+        SHADER_PARAMETER(FVector2f, Spacing)
+        // 只读取当前粒子状态，并向支持 UAV 的浮点纹理写入结果。
+        SHADER_PARAMETER_RDG_BUFFER_SRV(StructuredBuffer<Particle>, InputParticles)
+        SHADER_PARAMETER_RDG_TEXTURE_UAV(RWTexture2D<float4>, ClothDeformation)
+    END_SHADER_PARAMETER_STRUCT()
+
+    static bool ShouldCompilePermutation(const FGlobalShaderPermutationParameters& Parameters)
+    {
+        // 与模拟着色器一样，仅在支持 SM5 的平台编译。
+        return IsFeatureLevelSupported(Parameters.Platform, ERHIFeatureLevel::SM5);
+    }
+};
+```
+
+只需要修改Begin和End中间的参数，其他地方根据C++的类名进行修改
+
+
+
+需要将cpp类拖入场景中进行实例化，随后执行cpp中使用的方法
+
+#### 构造函数 AMyClothWPOActor::AMyClothWPOActor()
+
+#### 构造回调函数 void AMyClothWPOActor::OnConstruction(const FTransform& Transform)
+
+#### 开始游戏回调 void AMyClothWPOActor::BeginPlay()
+
+#### 每帧更新回调 void AMyClothWPOActor::Tick(float DeltaSeconds)
+
+#### 结束游戏回调 void AMyClothWPOActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
+
+#### 其他自定义实现方法
+
+- 定义网格构建函数 void AMyClothWPOActor::BuildGrid()
+- 自定义 GPU 任务提交函数 void AMyClothWPOActor::DispatchCloth(int32 Steps, TArray<FVector4f> InitialParticles)
+
+
+
+
+
+
+
+# 引用网页
+
+虚幻官方C++入门文档
+
+https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-cpp-quick-start?lang=zh-CN
+
+Compute Shader 完整教程
+
+https://www.cnblogs.com/ysh11o/p/19674687
+
+个人ComputeShader案例代码
+
+https://github.com/yinqinqinqin/MyComputeShader
