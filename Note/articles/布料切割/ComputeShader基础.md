@@ -137,6 +137,8 @@ public:
 
 主要放置游戏的**Actor 生命周期相关方法声明**，例如蓝图中的Tick，BeginPlay
 
+这些声明表示在代码逻辑中需要重新定义的函数，所以用虚函数表示
+
 使用的方法：
 
 | 方法                       | 是否必须自己写                          | 什么时候需要                                                 |
@@ -226,15 +228,15 @@ class FMyClothDeformationCS : public FGlobalShader
 
 需要将cpp类拖入场景中进行实例化，随后执行cpp中使用的方法
 
-#### 构造函数 AMyClothWPOActor::AMyClothWPOActor()
+- 构造函数 AMyClothWPOActor::AMyClothWPOActor()
 
-#### 构造回调函数 void AMyClothWPOActor::OnConstruction(const FTransform& Transform)
+- 构造回调函数 void AMyClothWPOActor::OnConstruction(const FTransform& Transform)
 
-#### 开始游戏回调 void AMyClothWPOActor::BeginPlay()
+- 开始游戏回调 void AMyClothWPOActor::BeginPlay()
 
-#### 每帧更新回调 void AMyClothWPOActor::Tick(float DeltaSeconds)
+- 每帧更新回调 void AMyClothWPOActor::Tick(float DeltaSeconds)
 
-#### 结束游戏回调 void AMyClothWPOActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
+- 结束游戏回调 void AMyClothWPOActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 #### 其他自定义实现方法
 
@@ -244,6 +246,69 @@ class FMyClothDeformationCS : public FGlobalShader
 
 
 
+
+
+
+# 名词解释
+
+## 关键字
+
+   [unroll]：显示表示循环 （可选）
+
+
+
+## 接口
+
+UAV：**UAV（Unordered Access View，无序访问视图）是 Shader 读写 GPU 缓冲区或纹理的接口**
+
+SRV：**SRV（Shader Resource View，着色器资源视图）让 Shader 以只读方式访问一个 Buffer 或纹理**
+
+> [!NOTE]
+>
+> SRV是指针指向的地方读，UAV是从指针指向的地方写	
+
+usf中，Inputparticles参数读取Current的值，并将结果OutputParticles写入Next地址
+
+```c++
+Parameters->InputParticles = Graph.CreateSRV(Current);   
+Parameters->OutputParticles = Graph.CreateUAV(Next);
+```
+
+
+
+| 资源        | 只读视图的 C++ 类型 | HLSL 中的声明                |
+| ----------- | ------------------- | ---------------------------- |
+| 粒子 Buffer | `FRDGBufferSRVRef`  | `StructuredBuffer<Particle>` |
+| 二维纹理    | `FRDGTextureSRVRef` | `Texture2D<float4>`          |
+
+其他接口类型
+
+| UE C++ 常用类型 | HLSL 类型 | 表示什么                                    |
+| --------------- | --------- | ------------------------------------------- |
+| `float`         | `float`   | 1 个浮点数，例如 `StepSeconds`              |
+| `FVector2f`     | `float2`  | 2 个浮点数，例如 `Spacing` 的横向和纵向间距 |
+| `FVector3f`     | `float3`  | 3 个浮点数，例如 `Gravity` 的 XYZ           |
+| `FVector4f`     | `float4`  | 4 个浮点数，例如 RGBA                       |
+| `int32`         | `int`     | 1 个有符号整数                              |
+| `FIntPoint`     | `int2`    | 2 个整数，例如 `GridSize` 的列数和行数      |
+| `FIntVector`    | `int3`    | 3 个整数，例如三维网格尺寸                  |
+| `uint32`        | `uint`    | 1 个无符号整数                              |
+
+
+
+| 资源和用途          | C++ 参数类型        | HLSL 声明                      | Shader 里怎么用                                              |
+| ------------------- | ------------------- | ------------------------------ | ------------------------------------------------------------ |
+| 只读结构化 Buffer   | `FRDGBufferSRVRef`  | `StructuredBuffer<Particle>`   | `Particles[i]`，读取第 `i` 个粒子。                          |
+| 可读写结构化 Buffer | `FRDGBufferUAVRef`  | `RWStructuredBuffer<Particle>` | `Particles[i] = particle`，写回一个粒子。                    |
+| 只读有格式 Buffer   | `FRDGBufferSRVRef`  | `Buffer<float>`                | `Values[i]`，按视图指定的格式读取数值。                      |
+| 可读写有格式 Buffer | `FRDGBufferUAVRef`  | `RWBuffer<float>`              | `Values[i] = value`，按指定格式写入数值。                    |
+| 只读原始 Buffer     | `FRDGBufferSRVRef`  | `ByteAddressBuffer`            | `Data.Load(offset)`，按**字节偏移**读取 32 位数据。          |
+| 可读写原始 Buffer   | `FRDGBufferUAVRef`  | `RWByteAddressBuffer`          | `Data.Store(offset, bits)`，按字节偏移写入。                 |
+| 只读二维纹理        | `FRDGTextureSRVRef` | `Texture2D<float4>`            | 用 `Load()` 读指定像素，或用 `SampleLevel()` 按 UV 采样。    |
+| 可读写二维纹理      | `FRDGTextureUAVRef` | `RWTexture2D<float4>`          | `Output[pixel] = value`，写指定像素。你的变形 RT 就是这一类。 |
+| 只读三维纹理        | `FRDGTextureSRVRef` | `Texture3D<float>`             | 读取三维体素，例如烟雾密度。                                 |
+| 可读写三维纹理      | `FRDGTextureUAVRef` | `RWTexture3D<float>`           | `Density[voxel] = value`，写指定体素。                       |
+| 纹理采样器          | `FRHISamplerState*` | `SamplerState`                 | 配合纹理采样，决定点采样、线性过滤、边缘如何处理。           |
 
 
 
